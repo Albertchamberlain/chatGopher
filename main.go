@@ -5,7 +5,9 @@ import (
 	"fmt"
 	"log"
 	"net/url"
+	"os"
 
+	"chaGopher/DB"
 	UI "chaGopher/UI"
 
 	"fyne.io/fyne/v2"
@@ -22,6 +24,7 @@ const preferenceCurrentTutorial = "currentTutorial"
 var topWindow fyne.Window
 
 func main() {
+	os.Setenv("FYNE_FONT", "./Font/LXGWWENKAIGBSCREENR.TTF") //加载字体
 	a := app.NewWithID("github.albertchamberlain.chatGopher")
 	a.SetIcon(theme.FyneLogo())
 	makeTray(a)
@@ -97,7 +100,7 @@ func makeMenu(a fyne.App, w fyne.Window) *fyne.MainMenu {
 	// disabledItem := fyne.NewMenuItem("Disabled", nil)
 	// disabledItem.Disabled = true
 
-	ListKeyItem := fyne.NewMenuItem("List All Key", nil)
+	// ListKeyItem := fyne.NewMenuItem("", nil)
 
 	// mailItem := fyne.NewMenuItem("Mail", func() { fmt.Println("Menu New->Other->Mail") })
 	// mailItem.Icon = theme.MailComposeIcon()
@@ -112,6 +115,7 @@ func makeMenu(a fyne.App, w fyne.Window) *fyne.MainMenu {
 		inputkeyEntry.SetPlaceHolder("Enter GPT-3 Key")
 		inputkeyEntryItem := container.NewVBox(inputkeyEntry, widget.NewButton("Save", func() {
 			fmt.Println(inputkeyEntry.Text)
+			DB.SetKeyAndValue("gpt3", []byte(inputkeyEntry.Text)) //插入到DB中
 		}))
 		w.SetContent(inputkeyEntryItem)
 		w.Resize(fyne.NewSize(400, 100))
@@ -126,6 +130,7 @@ func makeMenu(a fyne.App, w fyne.Window) *fyne.MainMenu {
 		inputkeyEntry.SetPlaceHolder("Enter GPT-4 Key")
 		inputkeyEntryItem := container.NewVBox(inputkeyEntry, widget.NewButton("Save", func() {
 			fmt.Println(inputkeyEntry.Text)
+			DB.SetKeyAndValue("gpt4", []byte(inputkeyEntry.Text)) //插入到DB中
 		}))
 		w.SetContent(inputkeyEntryItem)
 		w.Resize(fyne.NewSize(400, 100))
@@ -133,6 +138,30 @@ func makeMenu(a fyne.App, w fyne.Window) *fyne.MainMenu {
 	}
 	addGPT4KeyItem := fyne.NewMenuItem("GPT-4", addGPT4KeyWindow)
 	addGPT4KeyItem.Icon = theme.AccountIcon()
+
+	ListAllKeyWindow := func() {
+		w := a.NewWindow("List All Key") //另开一个窗口
+		kvs := DB.ListAllApi()
+		fmt.Println(kvs)
+		var counter float32
+		counter = 1
+		outputkeyEntryItem := container.NewVBox()
+		for k, v := range kvs {
+			outputkeyEntry := widget.NewPasswordEntry()
+			kvitems := k + ":" + v
+			outputkeyEntry.SetText(kvitems)
+			fmt.Println(outputkeyEntry.Text)
+			outputkeyEntryItem.Add(outputkeyEntry)
+			w.Resize(fyne.NewSize(400, 100*counter))
+			counter++
+		}
+		w.SetContent(outputkeyEntryItem)
+		//w.SetContent(outputkeyEntryItem)
+		//w.Resize(fyne.NewSize(400, 100))
+		w.Show()
+	}
+	listAllKeyItem := fyne.NewMenuItem("List All Key", ListAllKeyWindow)
+	listAllKeyItem.Icon = theme.ComputerIcon()
 
 	// gpt4keyitem := fyne.NewMenuItem("gpt4", func() { fmt.Println("Menu New->File") })
 	// gpt4keyitem.Icon = theme.AccountIcon()
@@ -142,7 +171,7 @@ func makeMenu(a fyne.App, w fyne.Window) *fyne.MainMenu {
 	newItem.ChildMenu = fyne.NewMenu("",
 		addGPT3KeyItem,
 		addGPT4KeyItem,
-		ListKeyItem,
+		listAllKeyItem,
 	)
 
 	openSettings := func() {
@@ -243,7 +272,7 @@ func unsupportedUI(t UI.AiModel) bool {
 }
 
 //侧面导航栏
-func makeNav(setTutorial func(tutorial UI.AiModel), loadPrevious bool) fyne.CanvasObject {
+func makeNav(setModelUI func(modelUi UI.AiModel), loadPrevious bool) fyne.CanvasObject {
 	a := fyne.CurrentApp()
 
 	tree := &widget.Tree{
@@ -276,7 +305,7 @@ func makeNav(setTutorial func(tutorial UI.AiModel), loadPrevious bool) fyne.Canv
 					return
 				}
 				a.Preferences().SetString(preferenceCurrentTutorial, uid)
-				setTutorial(t)
+				setModelUI(t)
 			}
 		},
 	}

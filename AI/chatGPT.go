@@ -9,7 +9,9 @@ import (
 
 func main() {
 	var apiKey string
+	var prompt string
 	apiKey = ""
+	prompt = "" //富文本
 	client := openai.NewClient(apiKey)
 	resp, err := client.CreateChatCompletion(
 		context.Background(),
@@ -18,7 +20,7 @@ func main() {
 			Messages: []openai.ChatCompletionMessage{
 				{
 					Role:    openai.ChatMessageRoleUser,
-					Content: "Hello!",
+					Content: "今天天气这么好" + prompt,
 				},
 			},
 		},

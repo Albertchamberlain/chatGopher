@@ -12,7 +12,11 @@ type AiModel struct {
 var (
 	// Tutorials defines the metadata for each tutorial
 	AiModels = map[string]AiModel{
-		"Welcome": {"Welcome", "", welcomeScreen, true},
+		"Welcome": {"Welcome",
+			"",
+			welcomeScreen,
+			true,
+		},
 		"ChatGPT": {"ChatGPT",
 			"ChatGPT Model(dafault GPT3.5)",
 			chatGPTScreen,

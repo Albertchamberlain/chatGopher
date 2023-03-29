@@ -25,6 +25,7 @@ func GetValueByKey(key string) string {
 //设置key和value
 func SetKeyAndValue(key string, value []byte) bool {
 	err := DB.Put([]byte(key), value, nil)
+	fmt.Println(key, value)
 	return err == nil
 }
 
@@ -39,9 +40,11 @@ func DelKeyAndValue(key string) bool {
 }
 
 //list出所有的api "key",好吧，其实它是value，但也是key，此key非彼key
-func ListAllApi() {
+func ListAllApi() map[string]string {
 	iter := DB.NewIterator(nil, nil)
+	m := make(map[string]string)
 	for iter.Next() {
-		fmt.Println(iter.Key, iter.Value)
+		m[string(iter.Key())] = string(iter.Value())
 	}
+	return m
 }
