@@ -1,4 +1,4 @@
-// Package main provides various examples of Fyne API capabilities.
+// Package main include main screen.
 package main
 
 import (
@@ -7,8 +7,8 @@ import (
 	"net/url"
 	"os"
 
-	"chaGopher/DB"
-	UI "chaGopher/UI"
+	DB "chaGopher/Database"
+	UI "chaGopher/Screens"
 
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/app"
@@ -156,8 +156,6 @@ func makeMenu(a fyne.App, w fyne.Window) *fyne.MainMenu {
 			counter++
 		}
 		w.SetContent(outputkeyEntryItem)
-		//w.SetContent(outputkeyEntryItem)
-		//w.Resize(fyne.NewSize(400, 100))
 		w.Show()
 	}
 	listAllKeyItem := fyne.NewMenuItem("List All Key", ListAllKeyWindow)

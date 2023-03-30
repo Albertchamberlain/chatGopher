@@ -2,7 +2,7 @@ package UI
 
 import "fyne.io/fyne/v2"
 
-// Tutorial defines the data structure for a tutorial
+// AiModel defines the model's screen
 type AiModel struct {
 	Title, Intro string
 	View         func(w fyne.Window) fyne.CanvasObject
@@ -10,7 +10,7 @@ type AiModel struct {
 }
 
 var (
-	// Tutorials defines the metadata for each tutorial
+	// AiModels defines the metadata for each model's screen
 	AiModels = map[string]AiModel{
 		"Welcome": {"Welcome",
 			"",
