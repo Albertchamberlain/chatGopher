@@ -19,7 +19,7 @@ import (
 	"fyne.io/fyne/v2/widget"
 )
 
-const preferenceCurrentTutorial = "currentTutorial"
+const preferenceCurrentUI = "currentUI"
 
 var topWindow fyne.Window
 
@@ -274,7 +274,6 @@ func unsupportedUI(t UI.AiModel) bool {
 //侧面导航栏
 func makeNav(setModelUI func(modelUi UI.AiModel), loadPrevious bool) fyne.CanvasObject {
 	a := fyne.CurrentApp()
-
 	tree := &widget.Tree{
 		ChildUIDs: func(uid string) []string {
 			return UI.AiModelsIndex[uid]
@@ -304,14 +303,14 @@ func makeNav(setModelUI func(modelUi UI.AiModel), loadPrevious bool) fyne.Canvas
 				if unsupportedUI(t) {
 					return
 				}
-				a.Preferences().SetString(preferenceCurrentTutorial, uid)
+				a.Preferences().SetString(preferenceCurrentUI, uid)
 				setModelUI(t)
 			}
 		},
 	}
 
 	if loadPrevious {
-		currentPref := a.Preferences().StringWithFallback(preferenceCurrentTutorial, "welcome")
+		currentPref := a.Preferences().StringWithFallback(preferenceCurrentUI, "welcome")
 		tree.Select(currentPref)
 	}
 

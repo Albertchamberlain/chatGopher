@@ -22,7 +22,7 @@ func chatGPTScreen(_ fyne.Window) fyne.CanvasObject {
 	problemEntry := widget.NewMultiLineEntry()
 	problemEntry.Text = testText
 	problemEntry.Wrapping = fyne.TextWrapBreak
-	problemEntry.SetPlaceHolder("请在此输入问题。。。")
+	problemEntry.SetPlaceHolder("请在此输入问题......")
 	problemEntry.Refresh()
 	//TODO 通知实现
 	//TODO 进度条
