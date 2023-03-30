@@ -7,8 +7,8 @@ import (
 	"net/url"
 	"os"
 
-	DB "chaGopher/Database"
-	UI "chaGopher/Screens"
+	Database "chaGopher/Database"
+	Screen "chaGopher/Screens"
 
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/app"
@@ -39,7 +39,7 @@ func main() {
 	title := widget.NewLabel("Component name")
 	intro := widget.NewLabel("An introduction would probably go\nhere, as well as a")
 	intro.Wrapping = fyne.TextWrapWord
-	setUI := func(t UI.AiModel) {
+	setUI := func(t Screen.AiModel) {
 		if fyne.CurrentDevice().IsMobile() {
 			child := a.NewWindow(t.Title)
 			topWindow = child
@@ -58,12 +58,12 @@ func main() {
 		content.Refresh()
 	}
 
-	UI := container.NewBorder(
+	UIContainer := container.NewBorder(
 		container.NewVBox(title, widget.NewSeparator(), intro), nil, nil, nil, content)
 	if fyne.CurrentDevice().IsMobile() {
 		w.SetContent(makeNav(setUI, false))
 	} else {
-		split := container.NewHSplit(makeNav(setUI, true), UI)
+		split := container.NewHSplit(makeNav(setUI, true), UIContainer)
 		split.Offset = 0.2
 		w.SetContent(split)
 	}
@@ -97,25 +97,13 @@ func makeMenu(a fyne.App, w fyne.Window) *fyne.MainMenu {
 	checkedAutoCopyItem := fyne.NewMenuItem("Auto Copy", nil)
 	checkedAutoCopyItem.Checked = true
 
-	// disabledItem := fyne.NewMenuItem("Disabled", nil)
-	// disabledItem.Disabled = true
-
-	// ListKeyItem := fyne.NewMenuItem("", nil)
-
-	// mailItem := fyne.NewMenuItem("Mail", func() { fmt.Println("Menu New->Other->Mail") })
-	// mailItem.Icon = theme.MailComposeIcon()
-
-	// otherItem.ChildMenu = fyne.NewMenu("",
-	// 	fyne.NewMenuItem("Project", func() { fmt.Println("Menu New->Other->Project") }),
-	// 	mailItem,
-	// )
 	addGPT3KeyWindow := func() {
 		w := a.NewWindow("Add GPT-3 Key") //另开一个窗口
 		inputkeyEntry := widget.NewPasswordEntry()
 		inputkeyEntry.SetPlaceHolder("Enter GPT-3 Key")
 		inputkeyEntryItem := container.NewVBox(inputkeyEntry, widget.NewButton("Save", func() {
 			fmt.Println(inputkeyEntry.Text)
-			DB.SetKeyAndValue("gpt3", []byte(inputkeyEntry.Text)) //插入到DB中
+			Database.SetKeyAndValue("gpt3", []byte(inputkeyEntry.Text)) //插入到DB中
 		}))
 		w.SetContent(inputkeyEntryItem)
 		w.Resize(fyne.NewSize(400, 100))
@@ -130,7 +118,7 @@ func makeMenu(a fyne.App, w fyne.Window) *fyne.MainMenu {
 		inputkeyEntry.SetPlaceHolder("Enter GPT-4 Key")
 		inputkeyEntryItem := container.NewVBox(inputkeyEntry, widget.NewButton("Save", func() {
 			fmt.Println(inputkeyEntry.Text)
-			DB.SetKeyAndValue("gpt4", []byte(inputkeyEntry.Text)) //插入到DB中
+			Database.SetKeyAndValue("gpt4", []byte(inputkeyEntry.Text)) //插入到DB中
 		}))
 		w.SetContent(inputkeyEntryItem)
 		w.Resize(fyne.NewSize(400, 100))
@@ -141,7 +129,7 @@ func makeMenu(a fyne.App, w fyne.Window) *fyne.MainMenu {
 
 	ListAllKeyWindow := func() {
 		w := a.NewWindow("List All Key") //另开一个窗口
-		kvs := DB.ListAllApi()
+		kvs := Database.ListAllApi()
 		fmt.Println(kvs)
 		var counter float32
 		counter = 1
@@ -161,11 +149,6 @@ func makeMenu(a fyne.App, w fyne.Window) *fyne.MainMenu {
 	listAllKeyItem := fyne.NewMenuItem("List All Key", ListAllKeyWindow)
 	listAllKeyItem.Icon = theme.ComputerIcon()
 
-	// gpt4keyitem := fyne.NewMenuItem("gpt4", func() { fmt.Println("Menu New->File") })
-	// gpt4keyitem.Icon = theme.AccountIcon()
-
-	// dirItem := fyne.NewMenuItem("Directory", func() { fmt.Println("Menu New->Directory") })
-	// dirItem.Icon = theme.FolderIcon()
 	newItem.ChildMenu = fyne.NewMenu("",
 		addGPT3KeyItem,
 		addGPT4KeyItem,
@@ -247,7 +230,6 @@ func makeMenu(a fyne.App, w fyne.Window) *fyne.MainMenu {
 		mainMean.Refresh()
 		fmt.Println(checkedAutoCopyItem.Checked)
 	}
-
 	return mainMean
 }
 
@@ -265,26 +247,27 @@ func makeTray(a fyne.App) {
 	}
 }
 
-func unsupportedUI(t UI.AiModel) bool {
+func unsupportedUI(t Screen.AiModel) bool {
+	fmt.Println("Unsupport UI")
 	return !t.SupportWeb && fyne.CurrentDevice().IsBrowser()
 }
 
 //侧面导航栏
-func makeNav(setModelUI func(modelUi UI.AiModel), loadPrevious bool) fyne.CanvasObject {
+func makeNav(setModelUI func(modelUi Screen.AiModel), loadPrevious bool) fyne.CanvasObject {
 	a := fyne.CurrentApp()
 	tree := &widget.Tree{
 		ChildUIDs: func(uid string) []string {
-			return UI.AiModelsIndex[uid]
+			return Screen.AiModelsIndex[uid]
 		},
 		IsBranch: func(uid string) bool {
-			children, ok := UI.AiModelsIndex[uid]
+			children, ok := Screen.AiModelsIndex[uid]
 			return ok && len(children) > 0
 		},
 		CreateNode: func(branch bool) fyne.CanvasObject {
 			return widget.NewLabel("Collection Widgets")
 		},
 		UpdateNode: func(uid string, branch bool, obj fyne.CanvasObject) {
-			t, ok := UI.AiModels[uid]
+			t, ok := Screen.AiModels[uid]
 			if !ok {
 				fyne.LogError("Missing ui panel: "+uid, nil)
 				return
@@ -297,7 +280,7 @@ func makeNav(setModelUI func(modelUi UI.AiModel), loadPrevious bool) fyne.Canvas
 			}
 		},
 		OnSelected: func(uid string) {
-			if t, ok := UI.AiModels[uid]; ok {
+			if t, ok := Screen.AiModels[uid]; ok {
 				if unsupportedUI(t) {
 					return
 				}
@@ -308,7 +291,7 @@ func makeNav(setModelUI func(modelUi UI.AiModel), loadPrevious bool) fyne.Canvas
 	}
 
 	if loadPrevious {
-		currentPref := a.Preferences().StringWithFallback(preferenceCurrentUI, "welcome")
+		currentPref := a.Preferences().StringWithFallback(preferenceCurrentUI, "Welcome")
 		tree.Select(currentPref)
 	}
 

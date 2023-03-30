@@ -1,4 +1,4 @@
-package UI
+package Screens
 
 import "fyne.io/fyne/v2"
 
@@ -32,13 +32,13 @@ var (
 			gpt4Screen,
 			true,
 		},
-		"DALL·E2": {"DALL·E2",
-			"DALL-E 2 image generation",
-			dalle2Screen,
+		"Painter": {"Painter",
+			"Pinter can painting",
+			painterScreen,
 			true,
 		},
 		"Whisper": {"Whisper",
-			"Whisper Model Audio Speech-To-Text",
+			"Audio to text",
 			whisperScreen,
 			true,
 		},
@@ -46,6 +46,6 @@ var (
 
 	// AiModelsIndex  defines how our AiModels should be laid out in the index tree
 	AiModelsIndex = map[string][]string{
-		"": {"Welcome", "ChatGPT", "GPT-3", "GPT-4", "DALL·E2", "Whisper"},
+		"": {"Welcome", "ChatGPT", "GPT-3", "GPT-4", "Painter", "Whisper"},
 	}
 )

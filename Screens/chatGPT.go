@@ -1,4 +1,4 @@
-package UI
+package Screens
 
 import (
 	"fmt"
@@ -11,7 +11,7 @@ import (
 func chatGPTScreen(_ fyne.Window) fyne.CanvasObject {
 	answer := widget.NewMultiLineEntry()
 	answer.Wrapping = fyne.TextWrapBreak
-	answer.SetPlaceHolder("准备接收回答ing")
+	answer.SetPlaceHolder("Ready to answering")
 	testText := ""
 
 	answer.TextStyle = fyne.TextStyle{
@@ -22,7 +22,7 @@ func chatGPTScreen(_ fyne.Window) fyne.CanvasObject {
 	problemEntry := widget.NewMultiLineEntry()
 	problemEntry.Text = testText
 	problemEntry.Wrapping = fyne.TextWrapBreak
-	problemEntry.SetPlaceHolder("请在此输入问题......")
+	problemEntry.SetPlaceHolder("PLZ input here......")
 	problemEntry.Refresh()
 	//TODO 通知实现
 	//TODO 进度条
@@ -32,7 +32,7 @@ func chatGPTScreen(_ fyne.Window) fyne.CanvasObject {
 	// 		Content: "Content",
 	// 	})
 	// })
-	button := widget.NewButton("发送", func() {
+	button := widget.NewButton("Sent", func() {
 		fmt.Println("button tapped!") //发送问题
 	})
 	problemAndButton := container.NewVSplit(
