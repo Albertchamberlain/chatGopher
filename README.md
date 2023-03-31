@@ -14,10 +14,14 @@
    <a href="https://img.shields.io/github/last-commit/Albertchamberlain/chatGopher"><img src="https://img.shields.io/github/last-commit/Albertchamberlain/chatGopher"></a>
 </p>
 
+## 项目预览
+<p align="left">
+<a href="https://albertchamberlain.github.io/"><img src="./images/chatGPT.png" alt="chatGopher" width="300" /></a>
+</p>
 
 - 解决了中文乱码问题 
   - 字体来源于开源项目 (字体)[https://github.com/lxgw/LxgwWenkaiGB]
 
-
+目前因为代理原因，调用链路比较长，因此等待时间比较长
 
 进行中。。。。

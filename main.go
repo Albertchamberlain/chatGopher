@@ -7,8 +7,8 @@ import (
 	"net/url"
 	"os"
 
-	Database "chaGopher/Database"
-	Screen "chaGopher/Screens"
+	Database "chatGopher/Database"
+	Screen "chatGopher/Screens"
 
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/app"
@@ -69,6 +69,8 @@ func main() {
 	}
 	w.Resize(fyne.NewSize(900, 900))
 	w.ShowAndRun()
+	os.Unsetenv("FYNE_FONT")
+
 }
 
 //打印窗口生命周期
@@ -248,7 +250,7 @@ func makeTray(a fyne.App) {
 }
 
 func unsupportedUI(t Screen.AiModel) bool {
-	fmt.Println("Unsupport UI")
+	//fmt.Println("Unsupport UI")
 	return !t.SupportWeb && fyne.CurrentDevice().IsBrowser()
 }
 

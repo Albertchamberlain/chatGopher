@@ -12,23 +12,23 @@ import (
 	openai "github.com/sashabaranov/go-openai"
 )
 
-var charGPTApiKey string
-var chatGPTClient *openai.Client //chatGPT client
+var ChatGPTClient *openai.Client //chatGPT client
 
-func NewChatGPT() {
-	chatGPTClient = openai.NewClient(charGPTApiKey)
+func NewChatGPT(charGPTApiKey string) {
+	ChatGPTClient = openai.NewClient(charGPTApiKey)
+	fmt.Println(charGPTApiKey)
 }
 
 //正常模式
-func chatGPTNormalMode(prompt string) string {
-	resp, err := chatGPTClient.CreateChatCompletion(
+func ChatGPTNormalMode(prompt string) string {
+	resp, err := ChatGPTClient.CreateChatCompletion(
 		context.Background(),
 		openai.ChatCompletionRequest{
 			Model: openai.GPT3Dot5Turbo,
 			Messages: []openai.ChatCompletionMessage{
 				{
 					Role:    openai.ChatMessageRoleUser,
-					Content: prompt + prompt,
+					Content: prompt,
 				},
 			},
 		},
@@ -41,8 +41,8 @@ func chatGPTNormalMode(prompt string) string {
 }
 
 //流模式
-func chatGPTStreamingMode(prompt string) string {
-	prompt = "Lorem ipsum"
+func ChatGPTStreamingMode(prompt string) string {
+	//prompt = "Lorem ipsum"
 	ctx := context.Background()
 	req := openai.ChatCompletionRequest{
 		Model:     openai.GPT3Dot5Turbo,
@@ -55,7 +55,7 @@ func chatGPTStreamingMode(prompt string) string {
 		},
 		Stream: true,
 	}
-	stream, err := chatGPTClient.CreateChatCompletionStream(ctx, req)
+	stream, err := ChatGPTClient.CreateChatCompletionStream(ctx, req)
 	defer stream.Close()
 	if err != nil {
 		fmt.Printf("ChatCompletionStream error: %v\n", err)
@@ -77,7 +77,7 @@ func chatGPTStreamingMode(prompt string) string {
 }
 
 // 支持上文
-func chatGPTSupportContext(prompt string) string {
+func ChatGPTSupportContext(prompt string) string {
 	messages := make([]openai.ChatCompletionMessage, 0)
 	reader := bufio.NewReader(os.Stdin)
 	fmt.Println("Conversation")
@@ -90,7 +90,7 @@ func chatGPTSupportContext(prompt string) string {
 			Role:    openai.ChatMessageRoleUser,
 			Content: text,
 		})
-		resp, err := chatGPTClient.CreateChatCompletion(
+		resp, err := ChatGPTClient.CreateChatCompletion(
 			context.Background(),
 			openai.ChatCompletionRequest{
 				Model:    openai.GPT3Dot5Turbo,

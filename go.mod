@@ -1,13 +1,26 @@
-module chaGopher
+module chatGopher
 
 go 1.18
 
 require (
 	fyne.io/fyne/v2 v2.3.3
+	github.com/flopp/go-findfont v0.1.0
 	github.com/sashabaranov/go-openai v1.5.7
 )
 
-require github.com/golang/snappy v0.0.0-20180518054509-2e65f85255db // indirect
+require (
+	fyne.io/fyne v1.4.3 // indirect
+	github.com/Kodeworks/golang-image-ico v0.0.0-20141118225523-73f0f4cfade9 // indirect
+	github.com/akavel/rsrc v0.10.2 // indirect
+	github.com/golang/snappy v0.0.0-20180518054509-2e65f85255db // indirect
+	github.com/jackmordaunt/icns v0.0.0-20181231085925-4f16af745526 // indirect
+	github.com/josephspurrier/goversioninfo v1.4.0 // indirect
+	github.com/lucor/goinfo v0.0.0-20210802170112-c078a2b0f08b // indirect
+	github.com/nfnt/resize v0.0.0-20180221191011-83c6a9932646 // indirect
+	github.com/pkg/errors v0.9.1 // indirect
+	golang.org/x/mod v0.6.0-dev.0.20220419223038-86c51ed26bb4 // indirect
+	golang.org/x/tools v0.1.12 // indirect
+)
 
 require (
 	fyne.io/systray v1.10.1-0.20230312215936-7f71b037e260 // indirect
