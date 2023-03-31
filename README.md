@@ -3,7 +3,7 @@
 
 
 <p align="center">
-  <a href="https://albertchamberlain.github.io/"><img src="./images/charGopher.jpg" alt="chatGopher" width="300" /></a>
+  <a href="https://albertchamberlain.github.io/"><img src="./images/charGopher.jpg" alt="chatGopher" width="550" /></a>
 </p>
 <h1 align="center">chatGopher</h1>
 <p align="center">GUI tool for answer your question, support chatGPT / GPT3 / GPT4 / Bard / NewBing / Audio2Text / Text2Image (Coming Soon......)</p>
@@ -16,7 +16,7 @@
 
 ## 项目预览
 <p align="left">
-<a href="https://albertchamberlain.github.io/"><img src="./images/chatGPT.png" alt="chatGopher" width="300" /></a>
+<a href="https://github.com/Albertchamberlain/chatGopher/blob/main/images/chatGPT.png"><img src="./images/chatGPT.png" alt="chatGopher" width="550" /></a>
 </p>
 
 - 解决了中文乱码问题 
